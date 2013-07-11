@@ -3,6 +3,7 @@ import urllib
 
 from google.appengine.api import users
 from google.appengine.ext import db
+from google.appengine.api import images
 
 import jinja2
 import webapp2
@@ -14,14 +15,13 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 
 DEFAULT_GUESTBOOK_NAME = 'default_guestbook'
 
-
 # We set a parent key on the 'Greetings' to ensure that they are all in the same
 # entity group. Queries across the single entity group will be consistent.
 # However, the write rate should be limited to ~1/second.
 
 def guestbook_key(guestbook_name=DEFAULT_GUESTBOOK_NAME):
     """Constructs a Datastore key for a Guestbook entity with guestbook_name."""
-    return db.Key.from_path('Guestbook', guestbook_name or 'default_guest')
+    return db.Key.from_path('Guestbook', guestbook_name or 'default_guestbook')
 
 """Models an individual Guestbook entry with author, content, and date."""
 class Greeting(db.Model):
@@ -73,8 +73,6 @@ class MainPage(webapp2.RequestHandler):
         template = JINJA_ENVIRONMENT.get_template('index.html')
         self.response.write(template.render(template_values))
 
-
-
 class Guestbook(webapp2.RequestHandler):
 
     def post(self):
@@ -89,7 +87,7 @@ class Guestbook(webapp2.RequestHandler):
         if users.get_current_user():
             greeting.author = users.get_current_user().nickname()
 
-        avatar = self.request.get('img')
+        avatar = images.resize(self.request.get('img'),100,100)
         if avatar:
             greeting.avatar = db.Blob(avatar)
         greeting.content = self.request.get('content')
@@ -97,7 +95,6 @@ class Guestbook(webapp2.RequestHandler):
 
         query_params = {'guestbook_name': guestbook_name}
         self.redirect('/?' + urllib.urlencode(query_params))
-
 
 application = webapp2.WSGIApplication([
     ('/', MainPage),
