@@ -7,15 +7,21 @@
   <body>
     {% for greeting in greetings %}
       {% if greeting.author %}
-        <b>{{ greeting.author.nickname() }}</b> wrote:
+      	{% if greeting.avatar %}
+      		<img src="img?img_id={{ greeting.key() }}" /><br />
+      	{% endif %}
+        <b>{{ guestbook_name }}</b> wrote:
       {% else %}
        An anonymous person wrote:
       {% endif %}
       <blockquote>{{ greeting.content }}</blockquote>
     {% endfor %}
 
-    <form action="/sign?guestbook_name={{ guestbook_name }}" method="post">
+    <form action="/sign?{{ guestbook_name }}" enctype="multipart/form-data" method="post">
       <div><textarea name="content" rows="3" cols="60"></textarea></div>
+      <div><label>Avatar:</label></div>
+      <div><input type="file" name="img" /></div>
+      <input type="hidden" value="{{ guestbook_name }}" name="guestbook_name">
       <div><input type="submit" value="Sign Guestbook"></div>
     </form>
 
