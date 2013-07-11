@@ -10,7 +10,7 @@
       	{% if greeting.avatar %}
       		<img src="img?img_id={{ greeting.key() }}" /><br />
       	{% endif %}
-        <b>{{ guestbook_name }}</b> wrote:
+        <b>{{ greeting.author }}</b> wrote:
       {% else %}
        An anonymous person wrote:
       {% endif %}
