@@ -4,3 +4,9 @@ indexes:
   properties:
   - name: date
     direction: desc
+- kind: Heart
+  ancestor: yes
+  properties:
+  - name: user_id
+  - name: date
+    direction: desc

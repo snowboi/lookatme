@@ -1,39 +1,46 @@
-<!DOCTYPE html>
-{% autoescape true %}
-<html>
-  <head>
-  	<link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
-  </head>
-  <body>
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+	<br/>
+	<strong>Timeline : </strong><br/>
+	<br/>
     {% for greeting in greetings %}
       {% if greeting.author %}
-      	{% if greeting.avatar %}
-      		<img src="img?img_id={{ greeting.key() }}" /><br />
-      	{% endif %}
+      	{% if greeting.user_id %}
+        <a href="/?guestbook_name={{ greeting.user_id }}"><b>{{ greeting.author }}</b></a> wrote:
+        {% else %}
         <b>{{ greeting.author }}</b> wrote:
+        {% endif %}
       {% else %}
        An anonymous person wrote:
       {% endif %}
-      <blockquote>{{ greeting.content }}</blockquote>
+      <blockquote>
+        <i class="icon-heart"></i> <a href="#" id="{{ greeting.key() }}" class="heartcount">{{ greeting.heartCount }}</a> | <a href="/sendHeart" id="{{ greeting.key() }}" class="heart"><i class="icon-plus"></i></a><br/>
+		{% if greeting.avatar %}
+      		<img src="image?img_id={{ greeting.key() }}" /><br/>
+      	{% endif %}
+      	{{ greeting.content }}
+      </blockquote>
+      <br/>
     {% endfor %}
-
-    <form action="/sign?{{ guestbook_name }}" enctype="multipart/form-data" method="post">
-      <div><textarea name="content" rows="3" cols="60"></textarea></div>
-      <div><label>Avatar:</label></div>
-      <div><input type="file" name="img" /></div>
-      <input type="hidden" value="{{ guestbook_name }}" name="guestbook_name">
-      <div><input type="submit" value="Sign Guestbook"></div>
-    </form>
-
-    <hr>
-
-    <form>Guestbook name:
-      <input value="{{ guestbook_name }}" name="guestbook_name">
-      <input type="submit" value="switch">
-    </form>
-
-    <a href="{{ url|safe }}">{{ url_linktext }}</a>
-
-  </body>
-</html>
-{% endautoescape %}
+    
+    <script>
+    	var links = $("a.heart");
+    	links.click(function(event) {
+    		event.preventDefault();
+    		var id_value = $(this).attr("id");
+    		$.post($(this).attr("href"),{id:id_value},function(result) {
+    			var count=result.split(":",2);
+				if (count[0] == "count") {
+					$("#"+id_value+'.heartcount').html(count[1]);
+				} else {
+					//alert(result);
+				} 
+    		});
+    	});
+	</script>
+{% endblock %}

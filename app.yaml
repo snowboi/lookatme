@@ -1,5 +1,5 @@
 application: lookatmesnowboii
-version: 1
+version: 2
 runtime: python27
 api_version: 1
 threadsafe: true
@@ -8,8 +8,17 @@ handlers:
 - url: /stylesheets
   static_dir: stylesheets
 
+- url: /css
+  static_dir: bootstrap/css
+
+- url: /js
+  static_dir: bootstrap/js
+
+- url: /img
+  static_dir: bootstrap/img
+
 - url: /.*
-  script: helloworld.application
+  script: lookatme.app
 
 libraries:
 - name: webapp2
