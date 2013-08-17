@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "html/base.html" %}
 {% block title %}Home{% endblock %}
 {% block head %}
     {{ super() }}
@@ -11,12 +11,12 @@
     {% for greeting in greetings %}
       {% if greeting.author %}
       	{% if greeting.user_id %}
-        <a href="/?guestbook_name={{ greeting.user_id }}"><b>{{ greeting.author }}</b></a> wrote:
+        <a href="/?guestbook_name={{ greeting.user_id }}"><b>{{ greeting.author }}</b></a> wrote at {{ greeting.date.strftime('%Y-%m-%d %H:%M') }}
         {% else %}
-        <b>{{ greeting.author }}</b> wrote:
+        <b>{{ greeting.author }}</b> wrote at {{ greeting.date.strftime('%Y-%m-%d %H:%M') }}
         {% endif %}
       {% else %}
-       An anonymous person wrote:
+       An anonymous person wrote at {{ greeting.date.strftime('%Y-%m-%d %H:%M') }}
       {% endif %}
       <blockquote>
         <i class="icon-heart"></i> <a href="#" id="{{ greeting.key() }}" class="heartcount">{{ greeting.heartCount }}</a> | <a href="/sendHeart" id="{{ greeting.key() }}" class="heart"><i class="icon-plus"></i></a><br/>

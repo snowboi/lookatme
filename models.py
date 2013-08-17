@@ -16,6 +16,18 @@ class Heart(db.Model):
     date = db.DateTimeProperty(auto_now_add=True)
     user_id = db.StringProperty()
 
+class Profile(db.Model):
+    name = db.StringProperty()
+    birthday = db.DateProperty()
+    img = db.BlobProperty()
+    isDeleted = db.BooleanProperty(default=False)
+
+class ProfilePermission(db.Model):
+    profile = db.ReferenceProperty(Profile)
+    user_id = db.StringProperty()
+    isWritable = db.BooleanProperty(default=False)
+    isDeleted = db.BooleanProperty(default=False)
+    
 class LAMUser(db.Model):
     user_id = db.StringProperty()
     name = db.StringProperty()

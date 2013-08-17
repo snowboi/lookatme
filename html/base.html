@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+{% autoescape true %}
+<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    {% block head %}
+  	<link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
+    <title>{% block title %}{% endblock %} - Look@me</title>
+    {% endblock %}
+</head>
+<body>
+	<script src="http://code.jquery.com/jquery.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <div id="menu">
+        {% block menu %}
+        <a href="/" class="btn btn-inverse">Look@me</a>
+        <!--
+        <a href="/ranking?guestbook_name={{ guestbook_name }}" class="btn btn-primary">Ranking</a> 
+        <a href="/suggest?guestbook_name={{ guestbook_name }}" class="btn btn-primary">Suggest</a>
+        -->
+        <a href="/post" class="btn btn-primary">Post</a>
+        <a href="/profile" class="btn btn-primary">Profile</a>
+        <a href="{{ url|safe }}" class="btn btn-primary">{{ url_linktext }}</a>
+        {% endblock %}
+	</div>
+	<hr>
+
+    <div id="content">
+        {% block content %}{% endblock %}
+    </div>
+
+    <div id="footer">
+    {% block footer %}
+        <br /><hr><br />
+        <form>Guestbook name:
+            <input value="{{ guestbook_name }}" name="guestbook_name">
+            <input type="submit" value="switch">
+        </form>
+    {% endblock %}
+    </div>
+</body>
+{% endautoescape %}

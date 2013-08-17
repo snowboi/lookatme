@@ -10,3 +10,8 @@ indexes:
   - name: user_id
   - name: date
     direction: desc
+- kind: ProfilePermission
+  properties:
+  - name: isWritable
+  - name: user_id
+  - name: profile
