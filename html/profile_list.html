@@ -1,0 +1,23 @@
+{% extends "html/base.html" %}
+{% block title %}Suggest{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+	<a href="/profile?action=add" class="btn btn-primary">Add Profile</a><br/>
+	<br/>
+	<table border="1">
+	<tr><th>Profile Name</th><th>Image</th><th>edit</th></tr>
+    {% for profile in profiles %}
+      <tr><td>{{ profile.name }}</td>
+      {% if profile.img %}
+      	<td><img src="pfimg?img_id={{ profile.key() }}" /></td>
+      {% else %}
+      	<td></td>
+      {% endif %}
+      <td><a href="/profile?action=edit&profile_id={{ profile.key() }}" class="btn btn-primary">Edit</a></td>
+      </tr>
+    {% endfor %}
+    </table>
+{% endblock %}

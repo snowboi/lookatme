@@ -1,0 +1,54 @@
+{% extends "html/base.html" %}
+{% block title %}Suggest{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+	{% if profile %}
+	Edit profile<br/>
+	<br/>
+	<form action="/profile" enctype="multipart/form-data" method="post">
+	Name: <input value="{{ profile.name }}" name="name"><br/>
+	Photo : {% if profile.img %}<img src="pfimg?img_id={{ profile.key() }}" /><br/>{% endif %}
+	<input type="file" name="img"><br/>
+	Birthday : Calendar<br/>
+	<br/>
+    <input type="submit" value="Update">
+    <input type="reset" value="Reset">
+    <input type="hidden" name="profile_id" value="{{ profile.key() }}">
+    </form>
+
+    <a href="/profile" profile_id="{{ profile.key() }}" class="btn btn-danger delete">Delete</a>
+
+	{% else %}
+	<br/>
+	Add new profile<br/>
+	<br/>
+	<form action="/profile" enctype="multipart/form-data" method="post">
+	Name: <input value="" name="name"><br/>
+	Photo : <input type="file" name="img"><br/>
+	Birthday : Calendar<br/>
+	<br/>
+    <input type="submit" value="Add">
+    <input type="reset" value="Reset">
+    </form>
+    {% endif %}
+
+	<script>
+	var links = $("a.btn.btn-danger.delete");
+	links.click(function(event) {
+	    event.preventDefault();
+	    var profile_id = $(this).attr("profile_id");
+		$.ajax({
+	    	url: '/profile?profile_id='+profile_id,
+	    	type: 'DELETE',
+	    	data: {profile_id:profile_id},
+	    	success: function(result) {
+		        // Do something with the result
+	    		// self.location("/profile");
+		    }
+		});});
+
+	</script>
+{% endblock %}
